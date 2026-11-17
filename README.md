@@ -18,17 +18,27 @@ Open this project and follow the slides to build the game. The project is set up
 - Packages: **uGUI** (`com.unity.ugui`) and **2D Sprite**.
 - **Active Input Handling = Input Manager (Old)** (the script uses `Input.GetKeyDown`).
 - `Assets/Scenes/GameScene.unity` – an empty scene with a 2D **Main Camera**. It is in the Build Profile scene list.
-- `Assets/Scripts/GameController.cs` – a starter script with **TODO** comments.
-- `Starter Resources/sprite image/` – the images for the lab. They are **not** imported yet.
+- `Assets/Resources/` – the game textures, already imported as **Sprite (2D and UI)**, **Sprite Mode = Single**.
+- `Assets/Scripts/ButtonController.cs` – a basic script that shows how a button calls a function.
+- `Assets/Scripts/GameController.cs` – the game script with **TODO** comments.
 
 ```
 W5-Template Project/
 ├── Assets/
-│   ├── Scenes/GameScene.unity      # open this scene
-│   └── Scripts/GameController.cs   # complete the TODOs
-├── Starter Resources/sprite image/ # drag these into Unity (slide 14)
-└── Docs/expected/                  # screenshots of the finished game
+│   ├── Resources/
+│   │   ├── Image/                   # original lab images (png + square image.psd)
+│   │   ├── img_1.png                # 1 = Rock      (used by the script)
+│   │   ├── img_2.png                # 2 = Paper
+│   │   ├── img_3.png                # 3 = Scissors
+│   │   └── img_4.png                # 4 = Unknown "?"
+│   ├── Scenes/GameScene.unity       # open this scene
+│   └── Scripts/
+│       ├── ButtonController.cs      # basic button example (complete)
+│       └── GameController.cs        # complete the TODOs
+└── Docs/expected/                   # screenshots of the finished game
 ```
+
+> `GameController` loads `img_1` .. `img_4` with `Resources.Load("img_" + n)`. Do not rename or move these files.
 
 > Two warnings (`CS0414 ... cntYou / cntCom is assigned but its value is never used`) appear at the start. They go away when you complete `CheckResult`.
 
@@ -48,20 +58,19 @@ Follow the slides. Tick each box when it works.
 
 ### Part 1 – UI (slides 4–22)
 
-- [ ] **Slide 14 – Import images**
-  - Create `Assets/Resources` and `Assets/Resources/Image`.
-  - Drag all files from `Starter Resources/sprite image/` into `Assets/Resources/Image`.
-  - Copy the four hand images into `Assets/Resources` and rename them:
+- [ ] **Slide 14 – Check the images** (already imported for you)
+  - Open `Assets/Resources`. Click `img_1`.
+  - In the **Inspector**, check **Texture Type = Sprite (2D and UI)** and **Sprite Mode = Single**.
+  - These are the images for the buttons and the result area:
 
-    | File | New name |
+    | File | Meaning |
     |---|---|
-    | `rock button.png` | `img_1` |
-    | `paper button.png` | `img_2` |
-    | `scissor button.png` | `img_3` |
-    | `unknow button.png` | `img_4` |
+    | `img_1` | Rock |
+    | `img_2` | Paper |
+    | `img_3` | Scissors |
+    | `img_4` | Unknown "?" |
 
-  - Select all images. Set **Texture Type = Sprite (2D and UI)** and **Sprite Mode = Single**. Click **Apply**.
-    (Unity 6.3 may import them as **Multiple**. The game still works, but **Single** keeps one sprite per image.)
+  - If you import new images later, set the same two settings and click **Apply**.
 - [ ] **Slides 4–8, 15 – Canvas and Main Panel**
   - **UI → Canvas** (Unity adds an **EventSystem**).
   - Canvas Scaler: **Scale With Screen Size**, reference **1920 x 1080**, match **0.5**.
@@ -78,6 +87,22 @@ Follow the slides. Tick each box when it works.
 
 ### Part 2 – Events (slides 23–32)
 
+**How a button works.** A **Button** has an **On Click ()** list. When the player clicks, Unity calls every function in this list. `ButtonController.cs` is the smallest example:
+
+```csharp
+public class ButtonController : MonoBehaviour
+{
+    public void OnButtonClick(GameObject gameObject)
+    {
+        Debug.Log(gameObject.name + " clicked " );
+    }
+}
+```
+
+- The function must be `public`. Otherwise it does not appear in the **On Click ()** menu.
+- The `GameObject` parameter is the object you drag into the event. Pass the button itself, then the script knows which button was clicked.
+
+- [ ] **Try it first (optional)** – Add `ButtonController` to any object. Link one button to `ButtonController → OnButtonClick (GameObject)` with the steps below. Press **Play** and click. Then remove the link and continue with `GameController`.
 - [ ] **Slide 23** – Create an empty object `GameManager`. Attach `Assets/Scripts/GameController.cs` to it.
 - [ ] **Slides 25–31** – For `1_Rock Button`, in **On Click ()**:
   1. Click **+**.
@@ -142,7 +167,8 @@ Complete the TODOs in `GameController.cs`:
 |---|---|
 | `NullReferenceException` in `InitGame` | An object name does not match the name in the script. |
 | `FormatException` in `OnButtonClick` | The button name does not start with `1`, `2` or `3`. |
-| Images do not change | Images are not directly in `Assets/Resources`, not named `img_1`..`img_4`, or not **Sprite (2D and UI)**. |
+| Images do not change | `img_1`..`img_4` were moved or renamed. They must stay directly in `Assets/Resources`. |
+| Function missing in **On Click ()** menu | The function is not `public`, or the script has a compile error (check the **Console**). |
 | Click does nothing | No **EventSystem** in the scene, or **On Click ()** is empty. |
 | Unity asks to import **TMP Essentials** | Click **Import TMP Essentials**. |
 
