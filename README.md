@@ -60,7 +60,8 @@ Follow the slides. Tick each box when it works.
     | `scissor button.png` | `img_3` |
     | `unknow button.png` | `img_4` |
 
-  - Select all images. Set **Texture Type = Sprite (2D and UI)**. Click **Apply**.
+  - Select all images. Set **Texture Type = Sprite (2D and UI)** and **Sprite Mode = Single**. Click **Apply**.
+    (Unity 6.3 may import them as **Multiple**. The game still works, but **Single** keeps one sprite per image.)
 - [ ] **Slides 4–8, 15 – Canvas and Main Panel**
   - **UI → Canvas** (Unity adds an **EventSystem**).
   - Canvas Scaler: **Scale With Screen Size**, reference **1920 x 1080**, match **0.5**.
